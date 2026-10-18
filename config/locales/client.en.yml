@@ -23,7 +23,7 @@ en:
         locked: "The Kyoto University email can't be removed or changed"
       admin:
         kyoto_email: "Kyoto University email"
-        reveal_hint: "Click \"Show\" above to see it"
+        reveal_hint: "Click \"Show\" next to the primary email to see it"
         verified_at: "Verified on"
         personal_email: "Personal email"
         personal_email_bound: "Added"

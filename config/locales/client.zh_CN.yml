@@ -5,6 +5,11 @@ zh_CN:
         categories:
           discourse_kuu_kyoto_email: "KUU 京大邮箱"
   js:
+    # core 把主邮箱译成「常用」，和本插件说的「常用邮箱」撞名
+    user:
+      email:
+        primary: "主邮箱"
+        primary_label: "主邮箱"
     kuu_kyoto_email:
       bind_email: "绑定常用邮箱"
       pending: "确认邮件已发送到 %{email}，点邮件里的链接即可完成绑定。"
@@ -23,7 +28,7 @@ zh_CN:
         locked: "京大认证邮箱不能删除或修改"
       admin:
         kyoto_email: "京大认证邮箱"
-        reveal_hint: "点上方「显示」后可见"
+        reveal_hint: "点主邮箱旁的「显示」后可见"
         verified_at: "验证于"
         personal_email: "常用邮箱"
         personal_email_bound: "已绑定"
