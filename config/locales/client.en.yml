@@ -18,9 +18,10 @@ en:
         how: "Add a personal email (Gmail, iCloud, etc.). Once you confirm it, it becomes your primary email and receives notifications and password resets."
         later: "Later"
       preferences:
-        kyoto_email: "Your Kyoto University email is only for verification. It doesn't receive notifications and can't be removed or changed."
-        no_personal_email: "You haven't added a personal email yet."
-        personal_email: "Notifications go to your personal email %{email}."
+        title: "Kyoto University email"
+        verified_on: "Verified on %{date}"
+        description: "Only used for verification. It doesn't receive notifications and can't be removed or changed."
+        primary_warning: "Your primary email is your Kyoto University email. Mail to it takes minutes to arrive and it stops working after you graduate. Switch to a personal email soon."
         locked: "The Kyoto University email can't be removed or changed"
       admin:
         kyoto_email: "Kyoto University email"

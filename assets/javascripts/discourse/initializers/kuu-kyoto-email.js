@@ -2,7 +2,7 @@ import EmailDropdown from "discourse/components/email-dropdown";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { i18n } from "discourse-i18n";
 import AdminUserKyotoEmail from "../components/kuu-kyoto-email/admin-user-kyoto-email";
-import PreferencesEmailNote from "../components/kuu-kyoto-email/preferences-email-note";
+import PreferencesKyotoEmail from "../components/kuu-kyoto-email/preferences-kyoto-email";
 import ReminderBanner from "../components/kuu-kyoto-email/reminder-banner";
 import SignupHint from "../components/kuu-kyoto-email/signup-hint";
 import { isKyotoEmail, viewingOwnUserPage } from "../lib/kyoto-email";
@@ -24,7 +24,7 @@ export default {
       api.renderInOutlet("above-main-container", ReminderBanner);
       api.renderInOutlet(
         "user-preferences-account-after-email",
-        PreferencesEmailNote
+        PreferencesKyotoEmail
       );
       api.renderInOutlet("admin-user-below-names", AdminUserKyotoEmail);
       api.renderInOutlet("create-account-after-email", SignupHint);

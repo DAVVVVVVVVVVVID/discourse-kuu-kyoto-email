@@ -23,9 +23,10 @@ zh_CN:
         how: "绑定一个常用邮箱（Gmail、iCloud 等），确认后它会成为你的主邮箱，通知和找回密码的邮件都会发到那里。"
         later: "以后再说"
       preferences:
-        kyoto_email: "京大认证邮箱只用于身份认证，不接收通知，也不能删除或修改。"
-        no_personal_email: "你还没有绑定常用邮箱。"
-        personal_email: "通知会发到你的常用邮箱 %{email}。"
+        title: "京大认证邮箱"
+        verified_on: "验证于 %{date}"
+        description: "只用于身份认证，不接收通知，不能删除或修改。"
+        primary_warning: "你的主邮箱现在是京大邮箱：收信要等几分钟，毕业后会失效。建议尽快换成你的常用邮箱。"
         locked: "京大认证邮箱不能删除或修改"
       admin:
         kyoto_email: "京大认证邮箱"

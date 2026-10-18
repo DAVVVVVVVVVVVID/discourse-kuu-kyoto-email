@@ -40,11 +40,14 @@ module DiscourseKuuKyotoEmail
       user.user_emails.any? { |user_email| !domain?(user_email.email) }
     end
 
-    # 给当前用户的提醒用；没有京大邮箱的账号返回 nil，不显示任何提醒
+    # 只给本人看；没有京大邮箱的账号返回 nil，不显示任何京大邮箱相关的内容
     def self.reminder_status(user)
       return if self.for(user).blank?
 
       {
+        kyoto_email: self.for(user),
+        verified_at: verified_at(user),
+        primary_is_kyoto: primary_kyoto?(user),
         needs_personal_email: !personal_email?(user),
         pending_email: user.unconfirmed_emails.find { |email| !domain?(email) },
         prompt_dismissed: user.custom_fields[PROMPT_DISMISSED_FIELD].present?,

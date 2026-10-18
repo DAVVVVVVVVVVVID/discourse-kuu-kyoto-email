@@ -13,6 +13,9 @@ RSpec.describe CurrentUserSerializer do
     json = described_class.new(user, scope: user.guardian, root: false).as_json
 
     expect(json[:kuu_kyoto_email_status]).to eq(
+      kyoto_email: user.email,
+      verified_at: user.created_at.iso8601,
+      primary_is_kyoto: true,
       needs_personal_email: true,
       pending_email: nil,
       prompt_dismissed: false,

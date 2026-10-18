@@ -4,17 +4,22 @@ module PageObjects
   module Components
     # 偏好设置 → 账户里的邮箱区
     class KuuKyotoEmailPreferences < PageObjects::Components::Base
-      NOTE_SELECTOR = ".kuu-kyoto-email-note"
+      SECTION_SELECTOR = ".kuu-kyoto-email-section"
 
-      def has_personal_email_note?(email)
-        has_css?(
-          "#{NOTE_SELECTOR} .kuu-kyoto-email-note__personal",
-          text: I18n.t("js.kuu_kyoto_email.preferences.personal_email", email:),
-        )
+      def has_kyoto_email?(email)
+        has_css?("#{SECTION_SELECTOR} .kuu-kyoto-email-section__address", text: email)
       end
 
-      def has_bind_button?
-        has_css?("#{NOTE_SELECTOR} .kuu-kyoto-email-note__bind")
+      def has_primary_warning?
+        has_css?("#{SECTION_SELECTOR} .kuu-kyoto-email-section__warning")
+      end
+
+      def has_no_primary_warning?
+        has_no_css?("#{SECTION_SELECTOR} .kuu-kyoto-email-section__warning")
+      end
+
+      def has_no_kyoto_email_section?
+        has_no_css?(SECTION_SELECTOR)
       end
 
       def has_locked_email?(email)

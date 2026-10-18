@@ -32,7 +32,8 @@ RSpec.describe "Add personal email" do
     visit("/u/#{user.username}/preferences/account")
     expect(banner).to be_hidden
     expect(bind_modal).to be_closed
-    expect(preferences).to have_personal_email_note("taro@example.com")
+    expect(preferences).to have_kyoto_email(kyoto_email)
+    expect(preferences).to have_no_primary_warning
     expect(preferences).to have_locked_email(kyoto_email)
   end
 
@@ -49,6 +50,7 @@ RSpec.describe "Add personal email" do
     expect(bind_modal).to be_closed
 
     visit("/u/#{user.username}/preferences/account")
-    expect(preferences).to have_bind_button
+    expect(preferences).to have_kyoto_email(kyoto_email)
+    expect(preferences).to have_primary_warning
   end
 end

@@ -28,4 +28,11 @@ RSpec.describe "Admin views Kyoto email" do
 
     expect(page).to have_css(".kuu-kyoto-email-admin__email", text: user.email)
   end
+
+  it "leaves the Kyoto email section out of the admin's own preferences" do
+    page.visit("/u/#{admin.username}/preferences/account")
+
+    expect(page).to have_css(".pref-email")
+    expect(PageObjects::Components::KuuKyotoEmailPreferences.new).to have_no_kyoto_email_section
+  end
 end
