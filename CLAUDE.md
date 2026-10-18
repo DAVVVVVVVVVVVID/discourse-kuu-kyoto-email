@@ -39,7 +39,7 @@
 - 浏览器测试的 Playwright 环境问题、样式缓存问题，见评分插件 `CLAUDE.md` 的「开发环境」一节
 - 插件的启用开关是站点设置 `kuu_kyoto_email_enabled`，默认关闭，开发环境要在后台打开
 - 推送：WSL 里的 git 默认用 Windows 的 Git Credential Manager，会弹浏览器。本机 `gh` 已登录时可以临时借用它的凭据：`git -c credential.helper= -c credential.helper='!gh auth git-credential' push`
-- 截图检查界面：用评分插件的 `script/screenshot.mjs`（用法见那个文件开头）。本地开发库里建了两个测试账号：`kyoto_student_test`（只有京大邮箱的普通用户）和 `kuu_admin_test`（管理员），密码都是 `kuu-local-test-pass-2026`，只存在本地开发库
+- 截图检查界面：用评分插件的 `script/screenshot.mjs`（用法见那个文件开头）。本地开发库里建了两个测试账号：`kyoto_student_test`（只有京大邮箱的普通用户）和 `kuu_admin_test`（管理员），只存在本地开发库，密码不写进仓库（忘了就在 rails console 里重设）
 
 ## 约定
 - Ruby 模块 `DiscourseKuuKyotoEmail`，接口挂在 `/kuu-kyoto-email`
