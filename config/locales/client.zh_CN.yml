@@ -12,6 +12,7 @@ zh_CN:
         primary_label: "主邮箱"
     kuu_kyoto_email:
       bind_email: "绑定常用邮箱"
+      signup_hint: "请用京大邮箱（%{domains}）注册。京大邮箱收信较慢，验证邮件可能要等几分钟才到。"
       pending: "确认邮件已发送到 %{email}，点邮件里的链接即可完成绑定。"
       banner:
         text: "京大邮箱只用于身份认证，延迟高、毕业后会失效。绑定常用邮箱后，通知和找回密码的邮件都会发到那里。"

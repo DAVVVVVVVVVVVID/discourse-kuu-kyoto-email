@@ -7,6 +7,7 @@ en:
   js:
     kuu_kyoto_email:
       bind_email: "Add a personal email"
+      signup_hint: "Sign up with your Kyoto University email (%{domains}). It receives mail slowly, so the confirmation email may take a few minutes to arrive."
       pending: "We sent a confirmation email to %{email}. Click the link in it to finish."
       banner:
         text: "Your Kyoto University email is only for verification. It is slow and stops working after you graduate. Add a personal email to receive notifications and password resets."

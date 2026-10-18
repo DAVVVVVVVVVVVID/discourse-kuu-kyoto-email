@@ -35,6 +35,7 @@
 - 开发服务器监测到 `plugins/` 下有变化会自动重启，文件改到一半时可能报错，改完再重启一次就好。评分插件也会同时被加载
 - `plugin.rb` 的 `required_version` 保持 `2026.1.0`：本地和线上都是 `2026.10.0-latest`，按版本比较规则它比 `2026.10.0` 低，写成当前版本号插件就不会被激活，而设置照样加载，Rails 启动时报 `undefined method 'configurable?' for nil`
 - 跑浏览器测试（spec/system）时 `d/dev` 要开着：测试环境的前端资源来自 `d/dev` 里的前端构建服务。`d/dev` 没开时，所有页面都返回 503，测试截图里一片空白（`frontend/discourse/dist/manifest/build.json` 里记的进程已经不在了）
+- 用 `script -qec 'd/dev'` 在后台跑的开发服务器，结束本机这一端时容器里的 `node bin/dev`、pitchfork、rolldown 不会跟着退出，下次再起会报 `rolldown devserver is already running`。用 `docker exec discourse_dev ps -eo pid,ppid,args` 找到进程后按 pid `kill`（`pkill -f` 会连 `bash -c` 自己一起杀掉）
 - 浏览器测试的 Playwright 环境问题、样式缓存问题，见评分插件 `CLAUDE.md` 的「开发环境」一节
 - 插件的启用开关是站点设置 `kuu_kyoto_email_enabled`，默认关闭，开发环境要在后台打开
 

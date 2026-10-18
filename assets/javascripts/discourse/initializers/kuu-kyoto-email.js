@@ -4,6 +4,7 @@ import { i18n } from "discourse-i18n";
 import AdminUserKyotoEmail from "../components/kuu-kyoto-email/admin-user-kyoto-email";
 import PreferencesEmailNote from "../components/kuu-kyoto-email/preferences-email-note";
 import ReminderBanner from "../components/kuu-kyoto-email/reminder-banner";
+import SignupHint from "../components/kuu-kyoto-email/signup-hint";
 import { isKyotoEmail, viewingOwnUserPage } from "../lib/kyoto-email";
 
 export default {
@@ -26,6 +27,8 @@ export default {
         PreferencesEmailNote
       );
       api.renderInOutlet("admin-user-below-names", AdminUserKyotoEmail);
+      api.renderInOutlet("create-account-after-email", SignupHint);
+      api.renderInOutlet("code-login-email-step-fields", SignupHint);
 
       // 锁只对本人生效，管理员在别人的偏好设置里看到的菜单不变；后端同样会拦
       api.modifySelectKit("dropdown-select-box").replaceContent((component) => {
