@@ -7,3 +7,14 @@ en:
     errors:
       kyoto_email_locked: "Your Kyoto University email verifies your account, so it can't be removed, changed or set as the primary email."
       kyoto_domain_not_allowed: "Kyoto University email addresses can't be added. Please use a personal email address."
+    graduation_reminder_mailer:
+      title: "Graduation reminder: add a personal email"
+      subject_template: "[%{email_prefix}] Add a personal email before you graduate"
+      text_body_template: |
+        Hi %{username},
+
+        Your forum account only has your Kyoto University email. It stops working after you graduate, and then you won't get forum notifications or be able to reset your password.
+
+        Please add a personal email (Gmail, iCloud, etc.) before you graduate. Once you confirm it, it becomes your primary email. Your Kyoto University email stays on your account to show that you studied at Kyoto University.
+
+        [Add a personal email](%{bind_url})

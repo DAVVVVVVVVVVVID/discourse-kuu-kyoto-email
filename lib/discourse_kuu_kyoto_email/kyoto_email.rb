@@ -7,6 +7,7 @@ module DiscourseKuuKyotoEmail
     VERIFIED_AT_FIELD = "kuu_kyoto_verified_at"
     PROMPT_DISMISSED_FIELD = "kuu_kyoto_prompt_dismissed_at"
     BANNER_SNOOZED_UNTIL_FIELD = "kuu_kyoto_banner_snoozed_until"
+    REMINDED_ON_FIELD = "kuu_kyoto_reminded_on"
 
     def self.domain?(email)
       setting = SiteSetting.allowed_email_domains
@@ -49,6 +50,20 @@ module DiscourseKuuKyotoEmail
         prompt_dismissed: user.custom_fields[PROMPT_DISMISSED_FIELD].present?,
         banner_snoozed_until: user.custom_fields[BANNER_SNOOZED_UNTIL_FIELD].presence,
       }
+    end
+
+    # 有京大邮箱、还能正常收信的账号；有没有常用邮箱由调用方逐个判断
+    def self.reminder_recipients
+      User
+        .real
+        .activated
+        .not_suspended
+        .where(staged: false)
+        .where(id: UserCustomField.where(name: EMAIL_FIELD).select(:user_id))
+        .joins(:user_stat)
+        .where("user_stats.bounce_score < ?", SiteSetting.bounce_score_threshold)
+        .includes(:user_emails)
+        .reject { |user| personal_email?(user) }
     end
 
     def self.record!(user, verified_at: Time.zone.now)

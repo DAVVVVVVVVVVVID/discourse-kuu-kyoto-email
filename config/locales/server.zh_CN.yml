@@ -7,3 +7,14 @@ zh_CN:
     errors:
       kyoto_email_locked: "京大邮箱用于认证你的身份，不能删除、修改，也不能设为主邮箱。"
       kyoto_domain_not_allowed: "不能添加京大邮箱，请填写你的常用邮箱。"
+    graduation_reminder_mailer:
+      title: "毕业季提醒：绑定常用邮箱"
+      subject_template: "[%{email_prefix}] 毕业前请绑定常用邮箱"
+      text_body_template: |
+        %{username}，你好：
+
+        你的论坛账号现在只有京大邮箱。京大邮箱毕业后会停用，到时你将收不到论坛的通知，也无法找回密码。
+
+        请在毕业前绑定一个常用邮箱（Gmail、iCloud 等）。确认后它会成为你的主邮箱，京大邮箱仍然留在账号上，用来证明你的京大学生身份。
+
+        [绑定常用邮箱](%{bind_url})
