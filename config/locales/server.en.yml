@@ -1,3 +1,7 @@
 en:
   site_settings:
     kuu_kyoto_email_enabled: "Enable KUU Kyoto email (the Kyoto University email is used only for sign-up and verification; notifications go to a personal email)."
+  kuu_kyoto_email:
+    errors:
+      kyoto_email_locked: "Your Kyoto University email verifies your account, so it can't be removed, changed or set as the primary email."
+      kyoto_domain_not_allowed: "Kyoto University email addresses can't be added. Please use a personal email address."

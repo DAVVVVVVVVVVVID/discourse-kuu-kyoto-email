@@ -1,3 +1,7 @@
 zh_CN:
   site_settings:
     kuu_kyoto_email_enabled: "启用 KUU 京大邮箱（京大邮箱只用于注册和身份认证，通知发到常用邮箱）。"
+  kuu_kyoto_email:
+    errors:
+      kyoto_email_locked: "京大邮箱用于认证你的身份，不能删除、修改，也不能设为主邮箱。"
+      kyoto_domain_not_allowed: "不能添加京大邮箱，请填写你的常用邮箱。"
