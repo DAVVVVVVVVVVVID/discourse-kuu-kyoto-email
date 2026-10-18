@@ -9,6 +9,8 @@
 
 enabled_site_setting :kuu_kyoto_email_enabled
 
+register_asset "stylesheets/common/kuu-kyoto-email.scss"
+
 module ::DiscourseKuuKyotoEmail
   PLUGIN_NAME = "discourse-kuu-kyoto-email"
 end
@@ -43,4 +45,26 @@ after_initialize do
   end
 
   on_enabled_change { |_old_value, new_value| Jobs.enqueue(:kuu_kyoto_email_backfill) if new_value }
+
+  # 前端据此认出邮箱列表里哪个是京大邮箱，不必为了标签另外暴露每个人的邮箱
+  add_to_serializer(:site, :kuu_kyoto_email_domains) do
+    SiteSetting.allowed_email_domains.split("|").compact_blank
+  end
+
+  add_to_serializer(
+    :current_user,
+    :kuu_kyoto_email_status,
+    include_condition: -> { DiscourseKuuKyotoEmail::KyotoEmail.for(object).present? },
+  ) { DiscourseKuuKyotoEmail::KyotoEmail.reminder_status(object) }
+
+  add_to_serializer(
+    :admin_detailed_user,
+    :kuu_kyoto_email,
+    include_condition: -> { DiscourseKuuKyotoEmail::KyotoEmail.for(object).present? },
+  ) do
+    {
+      verified_at: DiscourseKuuKyotoEmail::KyotoEmail.verified_at(object),
+      has_personal_email: DiscourseKuuKyotoEmail::KyotoEmail.personal_email?(object),
+    }
+  end
 end

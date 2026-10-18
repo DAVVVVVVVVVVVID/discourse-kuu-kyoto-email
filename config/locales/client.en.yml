@@ -4,3 +4,27 @@ en:
       site_settings:
         categories:
           discourse_kuu_kyoto_email: "KUU Kyoto email"
+  js:
+    kuu_kyoto_email:
+      bind_email: "Add a personal email"
+      pending: "We sent a confirmation email to %{email}. Click the link in it to finish."
+      banner:
+        text: "Your Kyoto University email is only for verification. It is slow and stops working after you graduate. Add a personal email to receive notifications and password resets."
+        snooze: "Hide for now"
+      bind_modal:
+        title: "Add your personal email"
+        why: "Your Kyoto University email only proves that you are a student. Mail to it takes minutes to arrive and it stops working after you graduate, so the forum doesn't send notifications there."
+        how: "Add a personal email (Gmail, iCloud, etc.). Once you confirm it, it becomes your primary email and receives notifications and password resets."
+        later: "Later"
+      preferences:
+        kyoto_email: "Your Kyoto University email is only for verification. It doesn't receive notifications and can't be removed or changed."
+        no_personal_email: "You haven't added a personal email yet."
+        personal_email: "Notifications go to your personal email %{email}."
+        locked: "The Kyoto University email can't be removed or changed"
+      admin:
+        kyoto_email: "Kyoto University email"
+        reveal_hint: "Click \"Show\" above to see it"
+        verified_at: "Verified on"
+        personal_email: "Personal email"
+        personal_email_bound: "Added"
+        personal_email_missing: "Not added"

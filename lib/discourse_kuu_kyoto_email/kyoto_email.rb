@@ -5,6 +5,8 @@ module DiscourseKuuKyotoEmail
   module KyotoEmail
     EMAIL_FIELD = "kuu_kyoto_email"
     VERIFIED_AT_FIELD = "kuu_kyoto_verified_at"
+    PROMPT_DISMISSED_FIELD = "kuu_kyoto_prompt_dismissed_at"
+    BANNER_SNOOZED_UNTIL_FIELD = "kuu_kyoto_banner_snoozed_until"
 
     def self.domain?(email)
       setting = SiteSetting.allowed_email_domains
@@ -35,6 +37,18 @@ module DiscourseKuuKyotoEmail
 
     def self.personal_email?(user)
       user.user_emails.any? { |user_email| !domain?(user_email.email) }
+    end
+
+    # 给当前用户的提醒用；没有京大邮箱的账号返回 nil，不显示任何提醒
+    def self.reminder_status(user)
+      return if self.for(user).blank?
+
+      {
+        needs_personal_email: !personal_email?(user),
+        pending_email: user.unconfirmed_emails.find { |email| !domain?(email) },
+        prompt_dismissed: user.custom_fields[PROMPT_DISMISSED_FIELD].present?,
+        banner_snoozed_until: user.custom_fields[BANNER_SNOOZED_UNTIL_FIELD].presence,
+      }
     end
 
     def self.record!(user, verified_at: Time.zone.now)

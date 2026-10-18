@@ -1,6 +1,8 @@
 zh_CN:
   site_settings:
     kuu_kyoto_email_enabled: "启用 KUU 京大邮箱（京大邮箱只用于注册和身份认证，通知发到常用邮箱）。"
+    kuu_kyoto_email_banner_snooze_days: "用户关掉「绑定常用邮箱」提示条后，过几天再显示。"
+    kuu_kyoto_email_reminder_dates: "每年给还没绑定常用邮箱的用户发提醒邮件的日期（月-日，日本时间），多个日期用 | 分隔；留空则不发。"
   kuu_kyoto_email:
     errors:
       kyoto_email_locked: "京大邮箱用于认证你的身份，不能删除、修改，也不能设为主邮箱。"

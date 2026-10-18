@@ -1,6 +1,8 @@
 en:
   site_settings:
     kuu_kyoto_email_enabled: "Enable KUU Kyoto email (the Kyoto University email is used only for sign-up and verification; notifications go to a personal email)."
+    kuu_kyoto_email_banner_snooze_days: "Days before the \"add a personal email\" banner comes back after a user closes it."
+    kuu_kyoto_email_reminder_dates: "Dates (MM-DD, Japan time) on which users who still have no personal email get a reminder email. Separate dates with |; leave empty to send none."
   kuu_kyoto_email:
     errors:
       kyoto_email_locked: "Your Kyoto University email verifies your account, so it can't be removed, changed or set as the primary email."

@@ -1,0 +1,36 @@
+.kuu-kyoto-email-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  margin: 1em 0;
+  padding: 0.75em 1em;
+  background: var(--tertiary-very-low);
+  border: 1px solid var(--tertiary-low);
+  border-radius: var(--d-default-border-radius);
+
+  &__icon {
+    color: var(--tertiary);
+  }
+
+  &__text {
+    flex: 1 1 auto;
+  }
+
+  &__link {
+    margin-left: 0.25em;
+    font-weight: bold;
+  }
+}
+
+.kuu-kyoto-email-note {
+  color: var(--primary-high);
+
+  p {
+    margin: 0 0 0.5em;
+  }
+}
+
+.kuu-kyoto-email-admin__verified-at {
+  margin-left: 0.5em;
+  color: var(--primary-medium);
+}

@@ -4,3 +4,27 @@ zh_CN:
       site_settings:
         categories:
           discourse_kuu_kyoto_email: "KUU 京大邮箱"
+  js:
+    kuu_kyoto_email:
+      bind_email: "绑定常用邮箱"
+      pending: "确认邮件已发送到 %{email}，点邮件里的链接即可完成绑定。"
+      banner:
+        text: "京大邮箱只用于身份认证，延迟高、毕业后会失效。绑定常用邮箱后，通知和找回密码的邮件都会发到那里。"
+        snooze: "暂时关闭"
+      bind_modal:
+        title: "绑定你的常用邮箱"
+        why: "京大邮箱只用来证明你是京大学生。它收信要等几分钟，毕业后还会失效，所以论坛的通知不发到京大邮箱。"
+        how: "绑定一个常用邮箱（Gmail、iCloud 等），确认后它会成为你的主邮箱，通知和找回密码的邮件都会发到那里。"
+        later: "以后再说"
+      preferences:
+        kyoto_email: "京大认证邮箱只用于身份认证，不接收通知，也不能删除或修改。"
+        no_personal_email: "你还没有绑定常用邮箱。"
+        personal_email: "通知会发到你的常用邮箱 %{email}。"
+        locked: "京大认证邮箱不能删除或修改"
+      admin:
+        kyoto_email: "京大认证邮箱"
+        reveal_hint: "点上方「显示」后可见"
+        verified_at: "验证于"
+        personal_email: "常用邮箱"
+        personal_email_bound: "已绑定"
+        personal_email_missing: "未绑定"
