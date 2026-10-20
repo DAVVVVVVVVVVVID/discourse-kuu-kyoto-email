@@ -23,6 +23,12 @@ after_initialize do
     EmailUpdater.prepend(DiscourseKuuKyotoEmail::EmailUpdaterExtension)
     UsersController.prepend(DiscourseKuuKyotoEmail::UsersControllerExtension)
     UserAnonymizer.prepend(DiscourseKuuKyotoEmail::UserAnonymizerExtension)
+    UserNotifications.prepend(DiscourseKuuKyotoEmail::UserNotificationsExtension)
+  end
+
+  register_modifier(:email_renderer_html) do |styles, message|
+    DiscourseKuuKyotoEmail::ActivationCodeMail.strip_links(styles, message)
+    styles
   end
 
   add_model_callback(:user_email, :before_update) do
@@ -39,6 +45,10 @@ after_initialize do
 
   # 管理员建的号、邀请链接注册的号等创建时就已激活，不会再走邮件激活
   on(:user_created) { |user| DiscourseKuuKyotoEmail::KyotoEmail.record!(user) if user.active? }
+
+  on(:user_destroyed) do |user|
+    DiscourseKuuKyotoEmail::ActivationCode.where(user_id: user.id).delete_all
+  end
 
   on(:merging_users) do |source_user, target_user|
     DiscourseKuuKyotoEmail::KyotoEmail.release_for_merge!(source_user, target_user)

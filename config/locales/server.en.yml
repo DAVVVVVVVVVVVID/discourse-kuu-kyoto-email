@@ -3,7 +3,29 @@ en:
     kuu_kyoto_email_enabled: "Enable KUU Kyoto email (the Kyoto University email is used only for sign-up and verification; notifications go to a personal email)."
     kuu_kyoto_email_banner_snooze_days: "Days before the \"add a personal email\" banner comes back after a user closes it."
     kuu_kyoto_email_reminder_dates: "Dates (MM-DD, Japan time) on which users who still have no personal email get a reminder email. Separate dates with |; leave empty to send none."
+    kuu_kyoto_email_activation_code_enabled: "Activate accounts registered with a Kyoto University email using a 6-digit code. The activation email contains only the code and no links (link scanning delays Kyoto University mail by minutes). When off, the usual activation link is sent."
+    kuu_kyoto_email_activation_code_ttl_minutes: "How many minutes an activation code stays valid."
   kuu_kyoto_email:
+    activation_code:
+      invalid: "That code isn't right. Please check it and try again."
+      expired: "This code has expired. Please send a new activation email."
+      locked: "Too many wrong attempts, so this code no longer works. Please send a new activation email."
+      missing: "There is no valid code. Please send a new activation email."
+      already_active: "This account is already active. Please log in."
+    activation_code_mailer:
+      title: "Activation code"
+      preview: "Your activation code is %{activation_code}"
+      subject_template: "[%{email_prefix}] Your activation code"
+      text_body_template: |
+        Welcome to %{site_name}!
+
+        Your activation code is:
+
+        **%{activation_code}**
+
+        Go back to the sign-up page and enter these 6 digits to activate your account. The code is valid for %{ttl_minutes} minutes.
+
+        If you didn't sign up, you can ignore this email.
     errors:
       kyoto_email_locked: "Your Kyoto University email verifies your account, so it can't be removed, changed or set as the primary email."
       kyoto_domain_not_allowed: "Kyoto University email addresses can't be added. Please use a personal email address."

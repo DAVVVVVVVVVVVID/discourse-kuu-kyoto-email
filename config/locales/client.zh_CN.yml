@@ -12,6 +12,13 @@ zh_CN:
         primary_label: "主邮箱"
     kuu_kyoto_email:
       bind_email: "绑定常用邮箱"
+      activation_code:
+        sent: "激活码已发到 %{email}，一般 1–2 分钟内到达。没收到的话请检查垃圾邮件。"
+        code_label: "6 位激活码"
+        code_format: "请输入邮件里的 6 位数字"
+        submit: "激活"
+        resent: "已重新发送，请使用新邮件里的激活码，之前的激活码已经作废。"
+        needs_approval: "账号已激活，管理员审核通过后就能登录了。"
       signup_hint: "请用京大邮箱（%{domains}）注册。京大邮箱收信较慢，验证邮件可能要等几分钟才到。"
       pending: "确认邮件已发送到 %{email}，点邮件里的链接即可完成绑定。"
       banner:

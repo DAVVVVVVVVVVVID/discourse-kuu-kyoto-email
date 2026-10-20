@@ -9,3 +9,10 @@ discourse_kuu_kyoto_email:
   kuu_kyoto_email_reminder_dates:
     default: "01-15|02-15|03-01"
     regex: "^$|^(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])(\\|(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))*$"
+  kuu_kyoto_email_activation_code_enabled:
+    default: false
+    client: true
+  kuu_kyoto_email_activation_code_ttl_minutes:
+    default: 30
+    min: 5
+    max: 1440

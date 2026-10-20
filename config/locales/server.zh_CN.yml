@@ -3,7 +3,29 @@ zh_CN:
     kuu_kyoto_email_enabled: "启用 KUU 京大邮箱（京大邮箱只用于注册和身份认证，通知发到常用邮箱）。"
     kuu_kyoto_email_banner_snooze_days: "用户关掉「绑定常用邮箱」提示条后，过几天再显示。"
     kuu_kyoto_email_reminder_dates: "每年给还没绑定常用邮箱的用户发提醒邮件的日期（月-日，日本时间），多个日期用 | 分隔；留空则不发。"
+    kuu_kyoto_email_activation_code_enabled: "京大邮箱注册的账号用 6 位激活码激活：激活邮件里只写激活码、不放任何链接（京大邮箱扫描链接会让邮件晚到几分钟）。关闭时照旧发带链接的激活邮件。"
+    kuu_kyoto_email_activation_code_ttl_minutes: "激活码的有效期（分钟）。"
   kuu_kyoto_email:
+    activation_code:
+      invalid: "激活码不正确，请检查后重新输入。"
+      expired: "激活码已过期，请重新发送激活邮件。"
+      locked: "输错次数太多，这个激活码已经作废，请重新发送激活邮件。"
+      missing: "没有有效的激活码，请重新发送激活邮件。"
+      already_active: "这个账号已经激活了，请直接登录。"
+    activation_code_mailer:
+      title: "激活码"
+      preview: "你的激活码是 %{activation_code}"
+      subject_template: "[%{email_prefix}] 你的激活码"
+      text_body_template: |
+        欢迎来到%{site_name}！
+
+        你的激活码是：
+
+        **%{activation_code}**
+
+        请回到注册页面输入这 6 位数字完成激活。激活码 %{ttl_minutes} 分钟内有效。
+
+        如果不是你本人注册的，请忽略这封邮件。
     errors:
       kyoto_email_locked: "京大邮箱用于认证你的身份，不能删除、修改，也不能设为主邮箱。"
       kyoto_domain_not_allowed: "不能添加京大邮箱，请填写你的常用邮箱。"

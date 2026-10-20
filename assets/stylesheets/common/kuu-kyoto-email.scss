@@ -78,3 +78,30 @@
   color: var(--primary-medium);
   font-size: var(--font-down-1);
 }
+
+.kuu-kyoto-email-account-created {
+  max-width: 32em;
+  margin: 1em auto;
+  padding: 1em 1.25em;
+  background: var(--secondary);
+  border: 1px solid var(--primary-low);
+  border-radius: var(--d-default-border-radius);
+}
+
+.kuu-kyoto-email-activation-code {
+  &__sent,
+  &__approval {
+    margin: 0 0 0.75em;
+  }
+
+  &__error {
+    margin-bottom: 0.75em;
+    color: var(--danger);
+  }
+
+  input {
+    max-width: 10em;
+    font-size: var(--font-up-2);
+    letter-spacing: 0.2em;
+  }
+}

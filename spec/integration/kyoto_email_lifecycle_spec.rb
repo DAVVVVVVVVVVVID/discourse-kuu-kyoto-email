@@ -56,10 +56,13 @@ RSpec.describe "Kyoto email lifecycle" do
   end
 
   describe "deleting or anonymizing the account" do
-    it "releases the Kyoto email when the account is deleted" do
+    it "releases the Kyoto email and drops any activation code when the account is deleted" do
+      DiscourseKuuKyotoEmail::ActivationCode.issue!(kyoto_user)
+
       UserDestroyer.new(admin).destroy(kyoto_user)
 
       expect(UserEmail.exists?(email: kyoto_email)).to eq(false)
+      expect(DiscourseKuuKyotoEmail::ActivationCode.exists?(user_id: kyoto_user.id)).to eq(false)
     end
 
     it "releases the Kyoto email when the account is anonymized" do
