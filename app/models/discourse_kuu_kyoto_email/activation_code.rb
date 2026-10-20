@@ -48,6 +48,7 @@ module DiscourseKuuKyotoEmail
       return if record.nil?
       return if record.expires_at <= Time.zone.now
       return if record.failed_attempts >= MAX_FAILED_ATTEMPTS
+      return if record.encrypted_code.blank?
 
       code = encryptor.decrypt_and_verify(record.encrypted_code)
       if code && ActiveSupport::SecurityUtils.secure_compare(record.code_hash, digest(user, code))
@@ -102,7 +103,7 @@ end
 #
 #  id              :bigint           not null, primary key
 #  code_hash       :string           not null
-#  encrypted_code  :string           not null
+#  encrypted_code  :string
 #  expires_at      :datetime         not null
 #  failed_attempts :integer          default(0), not null
 #  created_at      :datetime         not null

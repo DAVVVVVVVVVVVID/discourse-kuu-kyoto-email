@@ -57,6 +57,14 @@ RSpec.describe DiscourseKuuKyotoEmail::ActivationCode do
       expect(described_class.verify(user, new_code)).to eq(:ok)
     end
 
+    it "sends a new code when the stored row has no encrypted copy" do
+      code = described_class.issue!(user)
+      described_class.where(user_id: user.id).update_all(encrypted_code: nil)
+
+      expect(described_class.valid_for?(user)).to eq(false)
+      expect(described_class.verify(user, code)).to eq(:ok)
+    end
+
     it "sends a new code after the user changes the email address" do
       code = described_class.issue!(user)
       user.primary_email.update!(email: "jiro@st.kyoto-u.ac.jp")
