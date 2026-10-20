@@ -26,6 +26,8 @@ RSpec.describe "Activate account with code" do
 
     expect(page).to have_current_path("/u/account-created")
     expect(activation_code).to have_sent_to("taro@st.kyoto-u.ac.jp")
+    expect(activation_code).to have_resend_countdown
+    expect(page).to have_no_css(".account-created .activation-controls .resend")
 
     activation_code.activate_with(code_sent_to("taro@st.kyoto-u.ac.jp"))
 
@@ -76,10 +78,12 @@ RSpec.describe "Activate account with code" do
         text: I18n.t("js.kuu_kyoto_email.activation_code.no_valid_code"),
       )
 
-      find(".kuu-kyoto-email-not-activated-modal .activation-controls .resend").click
+      expect(activation_code).to have_resend_available
+      activation_code.resend
 
       expect(page).to have_no_css(".kuu-kyoto-email-not-activated-modal__no-code")
-      expect(page).to have_css(".kuu-kyoto-email-not-activated-modal__resent")
+      expect(activation_code).to have_resent_message
+      expect(activation_code).to have_resend_countdown
       activation_code.activate_with(code_sent_to("hanako@st.kyoto-u.ac.jp"))
       expect(page).to have_css(".header-dropdown-toggle.current-user")
     end

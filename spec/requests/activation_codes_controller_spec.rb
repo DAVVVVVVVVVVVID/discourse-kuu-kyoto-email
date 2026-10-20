@@ -139,4 +139,63 @@ RSpec.describe DiscourseKuuKyotoEmail::ActivationCodesController do
       expect(response.parsed_body).to eq("has_valid_code" => false)
     end
   end
+
+  describe "#resend" do
+    fab!(:password_student) do
+      Fabricate(
+        :user,
+        email: "jiro@st.kyoto-u.ac.jp",
+        password: "a-long-enough-password",
+        active: false,
+      )
+    end
+
+    def try_to_log_in
+      post "/session.json",
+           params: {
+             login: password_student.username,
+             password: "a-long-enough-password",
+           }
+    end
+
+    def resend
+      post "/kuu-kyoto-email/activation-code/resend.json"
+    end
+
+    it "sends the activation email again and keeps the account in the session" do
+      try_to_log_in
+
+      expect { resend }.to change { Jobs::CriticalUserEmail.jobs.size }.by(1)
+      expect(response.status).to eq(200)
+
+      DiscourseKuuKyotoEmail::ActivationCode.issue!(password_student)
+      get "/kuu-kyoto-email/activation-code/status.json"
+      expect(response.parsed_body).to eq("has_valid_code" => true)
+    end
+
+    it "waits before sending again" do
+      RateLimiter.enable
+      try_to_log_in
+      resend
+
+      resend
+
+      expect(response.status).to eq(429)
+    end
+
+    it "refuses without a sign-up or failed login in the same session" do
+      resend
+
+      expect(response.status).to eq(403)
+    end
+
+    it "refuses when new accounts need approval, like core does" do
+      SiteSetting.must_approve_users = true
+      try_to_log_in
+
+      resend
+
+      expect(response.status).to eq(403)
+    end
+  end
 end

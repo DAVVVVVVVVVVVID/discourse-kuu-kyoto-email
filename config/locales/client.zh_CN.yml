@@ -13,12 +13,14 @@ zh_CN:
     kuu_kyoto_email:
       bind_email: "绑定常用邮箱"
       activation_code:
-        sent: "激活码已发到 %{email}，一般 1–2 分钟内到达。没收到的话请检查垃圾邮件。"
+        sent: "激活码已发到 %{email}，一般 1–2 分钟就到，记得看看「其他」和垃圾邮件文件夹。"
         code_label: "6 位激活码"
         code_format: "请输入邮件里的 6 位数字"
         submit: "激活"
         resent: "已重新发送。之前收到的激活码如果还在有效期内，仍然可以用。"
-        no_valid_code: "激活码已过期或还没发送，请点「重新发送激活电子邮件」获取。"
+        resend: "重新发送"
+        resend_countdown: "重新发送（%{count} 秒）"
+        no_valid_code: "激活码已过期或还没发送，请点「重新发送」获取。"
         needs_approval: "账号已激活，管理员审核通过后就能登录了。"
       signup_hint: "请用京大邮箱（%{domains}）注册。京大邮箱收信较慢，验证邮件可能要等几分钟才到。"
       pending: "确认邮件已发送到 %{email}，点邮件里的链接即可完成绑定。"

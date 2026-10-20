@@ -1,6 +1,7 @@
 import Component from "@glimmer/component";
 import { getOwner } from "@ember/owner";
 import { service } from "@ember/service";
+import bodyClass from "discourse/helpers/body-class";
 import { isKyotoEmail } from "../../lib/kyoto-email";
 import ActivationCodeForm from "./activation-code-form";
 
@@ -26,6 +27,8 @@ export default class AccountCreatedActivationCode extends Component {
 
   <template>
     {{#if this.visible}}
+      {{! 页面下方 core 自带的「重新发送」藏起来，只留插件放在「激活」旁边的那个 }}
+      {{bodyClass "kuu-kyoto-email-activation-code-page"}}
       <div class="kuu-kyoto-email-account-created">
         <ActivationCodeForm
           @email={{this.accountCreated.email}}

@@ -5,10 +5,18 @@ import Form from "discourse/components/form";
 import { ajax } from "discourse/lib/ajax";
 import { extractError } from "discourse/lib/ajax-error";
 import { i18n } from "discourse-i18n";
+import ResendActivationButton from "./resend-activation-button";
 
 export default class ActivationCodeForm extends Component {
   @tracked errorMessage = null;
   @tracked needsApproval = false;
+  @tracked resent = false;
+
+  @action
+  handleResent() {
+    this.resent = true;
+    this.args.onResent?.();
+  }
 
   @action
   async submit(data) {
@@ -71,16 +79,28 @@ export default class ActivationCodeForm extends Component {
             />
           </form.Field>
 
+          {{#if this.resent}}
+            <p class="kuu-kyoto-email-activation-code__resent">
+              {{i18n "kuu_kyoto_email.activation_code.resent"}}
+            </p>
+          {{/if}}
+
           {{#if this.errorMessage}}
             <div class="kuu-kyoto-email-activation-code__error" role="alert">
               {{this.errorMessage}}
             </div>
           {{/if}}
 
-          <form.Submit
-            class="kuu-kyoto-email-activation-code__submit"
-            @label="kuu_kyoto_email.activation_code.submit"
-          />
+          <form.Actions>
+            <form.Submit
+              class="kuu-kyoto-email-activation-code__submit"
+              @label="kuu_kyoto_email.activation_code.submit"
+            />
+            <ResendActivationButton
+              @initialDelay={{@resendDelay}}
+              @onResent={{this.handleResent}}
+            />
+          </form.Actions>
         </Form>
       {{/if}}
     </div>

@@ -90,7 +90,8 @@
 
 .kuu-kyoto-email-activation-code {
   &__sent,
-  &__approval {
+  &__approval,
+  &__resent {
     margin: 0 0 0.75em;
   }
 
@@ -105,4 +106,12 @@
     font-size: var(--font-up-1);
     letter-spacing: 0.15em;
   }
+}
+
+// 插件在「激活」旁边放了自己的「重新发送」，core 自带的那个藏起来，免得页面上有两个
+body.kuu-kyoto-email-activation-code-page
+  .account-created
+  .activation-controls
+  .resend {
+  display: none;
 }
