@@ -56,7 +56,7 @@ export default class ActivationCodeForm extends Component {
 
         <Form @onSubmit={{this.submit}} as |form|>
           <form.Field
-            @format="small"
+            @format="full"
             @name="code"
             @title={{i18n "kuu_kyoto_email.activation_code.code_label"}}
             @validate={{this.validateCode}}

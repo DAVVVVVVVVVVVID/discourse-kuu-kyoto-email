@@ -100,8 +100,9 @@
   }
 
   input {
-    max-width: 10em;
-    font-size: var(--font-up-2);
-    letter-spacing: 0.2em;
+    width: 100%;
+    max-width: 12em;
+    font-size: var(--font-up-1);
+    letter-spacing: 0.15em;
   }
 }
