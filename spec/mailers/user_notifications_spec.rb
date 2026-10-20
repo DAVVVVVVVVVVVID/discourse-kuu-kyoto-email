@@ -44,6 +44,13 @@ RSpec.describe UserNotifications do
     expect(mail.header[DiscourseKuuKyotoEmail::ActivationCodeMail::MARKER_HEADER]).to be_nil
   end
 
+  it "sends the same code again when the student asks for another email" do
+    first_code = send_signup_email(student).text_part.body.to_s[/\d{6}/]
+    second_code = send_signup_email(student).text_part.body.to_s[/\d{6}/]
+
+    expect(second_code).to eq(first_code)
+  end
+
   it "uses the same code mail for the activation reminder" do
     email_token =
       student.email_tokens.create!(email: student.email, scope: EmailToken.scopes[:signup])

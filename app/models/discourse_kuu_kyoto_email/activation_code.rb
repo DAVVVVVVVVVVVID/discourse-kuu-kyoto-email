@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 module DiscourseKuuKyotoEmail
-  # 注册激活用的 6 位激活码。每个账号同时只有一个有效的码，库里只存 HMAC：
-  # 6 位数字只有一百万种，不加密钥的哈希拿到库就能直接穷举
+  # 注册激活用的 6 位激活码，每个账号同时只有一个。
+  # 校验用 HMAC（6 位数字只有一百万种，不加密钥的哈希拿到库就能穷举）；
+  # 另存一份用服务器密钥加密的原码，重新发送时才能再发同一个码
   class ActivationCode < ActiveRecord::Base
     self.table_name = "kuu_kyoto_activation_codes"
 
@@ -10,21 +11,55 @@ module DiscourseKuuKyotoEmail
 
     belongs_to :user
 
+    # 现有的码还能用就再发同一个（有效期重新计算，输错次数不清零），否则换新码。
+    # 第一封信晚到时，用户等不及点了重发，手里的码也还能用
     def self.issue!(user)
-      code = SecureRandom.random_number(1_000_000).to_s.rjust(6, "0")
       now = Time.zone.now
+      expires_at = SiteSetting.kuu_kyoto_email_activation_code_ttl_minutes.minutes.from_now
+
+      if (code = reusable_code(user))
+        where(user_id: user.id).update_all(expires_at:, updated_at: now)
+        return code
+      end
+
+      code = SecureRandom.random_number(1_000_000).to_s.rjust(6, "0")
       upsert(
         {
           user_id: user.id,
-          code_hash: digest(user.id, code),
+          code_hash: digest(user, code),
+          encrypted_code: encryptor.encrypt_and_sign(code),
           failed_attempts: 0,
-          expires_at: SiteSetting.kuu_kyoto_email_activation_code_ttl_minutes.minutes.from_now,
+          expires_at:,
           created_at: now,
           updated_at: now,
         },
         unique_by: :user_id,
       )
       code
+    end
+
+    def self.valid_for?(user)
+      reusable_code(user).present?
+    end
+
+    # 码绑定在发信时的邮箱上：用户在等待页改了邮箱，旧地址收到的码就不再有效
+    def self.reusable_code(user)
+      record = find_by(user_id: user.id)
+      return if record.nil?
+      return if record.expires_at <= Time.zone.now
+      return if record.failed_attempts >= MAX_FAILED_ATTEMPTS
+
+      code = encryptor.decrypt_and_verify(record.encrypted_code)
+      if code && ActiveSupport::SecurityUtils.secure_compare(record.code_hash, digest(user, code))
+        code
+      end
+    rescue ActiveSupport::MessageEncryptor::InvalidMessage
+      nil
+    end
+
+    def self.encryptor
+      key = Rails.application.key_generator.generate_key("kuu-kyoto-activation-code", 32)
+      ActiveSupport::MessageEncryptor.new(key, cipher: "aes-256-gcm")
     end
 
     # 返回 :ok、:invalid、:expired、:locked 或 :missing。
@@ -42,7 +77,7 @@ module DiscourseKuuKyotoEmail
 
       if ActiveSupport::SecurityUtils.secure_compare(
            record.code_hash,
-           digest(user.id, code.to_s.strip),
+           digest(user, code.to_s.strip),
          )
         record.destroy!
         :ok
@@ -51,11 +86,11 @@ module DiscourseKuuKyotoEmail
       end
     end
 
-    def self.digest(user_id, code)
+    def self.digest(user, code)
       OpenSSL::HMAC.hexdigest(
         "SHA256",
         Rails.application.secret_key_base,
-        "kuu-kyoto-activation-code:#{user_id}:#{code}",
+        "kuu-kyoto-activation-code:#{user.id}:#{Email.downcase(user.email.to_s)}:#{code}",
       )
     end
   end
@@ -67,6 +102,7 @@ end
 #
 #  id              :bigint           not null, primary key
 #  code_hash       :string           not null
+#  encrypted_code  :string           not null
 #  expires_at      :datetime         not null
 #  failed_attempts :integer          default(0), not null
 #  created_at      :datetime         not null

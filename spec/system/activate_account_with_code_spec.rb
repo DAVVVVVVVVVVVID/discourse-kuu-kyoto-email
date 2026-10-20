@@ -43,13 +43,14 @@ RSpec.describe "Activate account with code" do
       )
     end
 
-    before do
+    def send_activation_email
       email_token =
         student.email_tokens.create!(email: student.email, scope: EmailToken.scopes[:signup])
       EmailToken.enqueue_signup_email(email_token)
     end
 
     it "lets the student enter the code after trying to log in" do
+      send_activation_email
       login_page.open.fill(username: "hanako", password: "a-long-enough-password").click_login
 
       activation_code.activate_with("not-a-code")
@@ -62,6 +63,24 @@ RSpec.describe "Activate account with code" do
 
       activation_code.activate_with(code)
 
+      expect(page).to have_css(".header-dropdown-toggle.current-user")
+    end
+
+    it "tells the student to resend when the code has expired" do
+      freeze_time(1.hour.ago) { send_activation_email }
+
+      login_page.open.fill(username: "hanako", password: "a-long-enough-password").click_login
+
+      expect(page).to have_css(
+        ".kuu-kyoto-email-not-activated-modal__no-code",
+        text: I18n.t("js.kuu_kyoto_email.activation_code.no_valid_code"),
+      )
+
+      find(".kuu-kyoto-email-not-activated-modal .activation-controls .resend").click
+
+      expect(page).to have_no_css(".kuu-kyoto-email-not-activated-modal__no-code")
+      expect(page).to have_css(".kuu-kyoto-email-not-activated-modal__resent")
+      activation_code.activate_with(code_sent_to("hanako@st.kyoto-u.ac.jp"))
       expect(page).to have_css(".header-dropdown-toggle.current-user")
     end
   end

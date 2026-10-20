@@ -63,14 +63,12 @@ RSpec.describe DiscourseKuuKyotoEmail::ActivationCodesController do
       )
     end
 
-    it "rejects the old code after a new one is sent" do
-      old_code = code
-      new_code = DiscourseKuuKyotoEmail::ActivationCode.issue!(student)
+    it "keeps the code working after the activation email is sent again" do
+      first_code = code
 
-      activate(with: old_code) if old_code != new_code
+      expect(DiscourseKuuKyotoEmail::ActivationCode.issue!(student)).to eq(first_code)
+      activate(with: first_code)
 
-      expect(student.reload).not_to be_active if old_code != new_code
-      activate(with: new_code)
       expect(student.reload).to be_active
     end
 
@@ -98,6 +96,47 @@ RSpec.describe DiscourseKuuKyotoEmail::ActivationCodesController do
       activate
 
       expect(response.status).to eq(404)
+    end
+  end
+
+  describe "#status" do
+    fab!(:password_student) do
+      Fabricate(
+        :user,
+        email: "hanako@st.kyoto-u.ac.jp",
+        password: "a-long-enough-password",
+        active: false,
+      )
+    end
+
+    def try_to_log_in
+      post "/session.json",
+           params: {
+             login: password_student.username,
+             password: "a-long-enough-password",
+           }
+      expect(response.parsed_body["reason"]).to eq("not_activated")
+    end
+
+    it "tells the not-activated dialog whether the account has a valid code" do
+      try_to_log_in
+      get "/kuu-kyoto-email/activation-code/status.json"
+      expect(response.parsed_body).to eq("has_valid_code" => false)
+
+      DiscourseKuuKyotoEmail::ActivationCode.issue!(password_student)
+      get "/kuu-kyoto-email/activation-code/status.json"
+      expect(response.parsed_body).to eq("has_valid_code" => true)
+    end
+
+    it "reveals nothing without a failed login in the same session" do
+      DiscourseKuuKyotoEmail::ActivationCode.issue!(password_student)
+
+      get "/kuu-kyoto-email/activation-code/status.json",
+          params: {
+            login: password_student.username,
+          }
+
+      expect(response.parsed_body).to eq("has_valid_code" => false)
     end
   end
 end

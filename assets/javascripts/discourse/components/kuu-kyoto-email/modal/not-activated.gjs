@@ -5,6 +5,7 @@ import { service } from "@ember/service";
 import { trustHTML } from "@ember/template";
 import ActivationControls from "discourse/components/activation-controls";
 import ActivationEdit from "discourse/components/modal/activation-edit";
+import { ajax } from "discourse/lib/ajax";
 import { resendActivationEmail } from "discourse/lib/user-activation";
 import DModal from "discourse/ui-kit/d-modal";
 import { i18n } from "discourse-i18n";
@@ -14,7 +15,17 @@ import ActivationCodeForm from "../activation-code-form";
 export default class NotActivated extends Component {
   @service modal;
 
+  @tracked hasValidCode = true;
   @tracked resent = false;
+
+  constructor() {
+    super(...arguments);
+    this.#loadCodeStatus();
+  }
+
+  get showNoCodeHint() {
+    return !this.hasValidCode && !this.resent;
+  }
 
   @action
   async sendActivationEmail() {
@@ -32,6 +43,15 @@ export default class NotActivated extends Component {
     });
   }
 
+  async #loadCodeStatus() {
+    try {
+      const result = await ajax("/kuu-kyoto-email/activation-code/status");
+      this.hasValidCode = result.has_valid_code;
+    } catch {
+      // 查不到就当作有码，不打扰用户
+    }
+  }
+
   <template>
     <DModal
       class="not-activated-modal kuu-kyoto-email-not-activated-modal"
@@ -40,6 +60,11 @@ export default class NotActivated extends Component {
     >
       <:body>
         <p>{{trustHTML (i18n "login.not_activated" sentTo=@model.sentTo)}}</p>
+        {{#if this.showNoCodeHint}}
+          <p class="kuu-kyoto-email-not-activated-modal__no-code">
+            {{i18n "kuu_kyoto_email.activation_code.no_valid_code"}}
+          </p>
+        {{/if}}
         {{#if this.resent}}
           <p class="kuu-kyoto-email-not-activated-modal__resent">
             {{i18n "kuu_kyoto_email.activation_code.resent"}}

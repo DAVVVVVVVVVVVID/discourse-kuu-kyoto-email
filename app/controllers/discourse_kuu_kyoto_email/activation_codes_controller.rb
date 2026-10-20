@@ -30,6 +30,25 @@ module DiscourseKuuKyotoEmail
       render_json_error(I18n.t("rate_limiter.slow_down"), status: 429)
     end
 
+    # 「账号未激活」弹窗打开时用。只认 core 在用户输对密码后记进 session 的账号，
+    # 不接收用户名或邮箱，没法拿来探测别人的账号
+    def status
+      raise Discourse::NotFound if !SiteSetting.kuu_kyoto_email_activation_code_enabled
+
+      RateLimiter.new(
+        nil,
+        "kuu-activation-code-status-#{request.remote_ip}",
+        30,
+        1.minute,
+      ).performed!
+
+      user_id = session[SessionController::ACTIVATE_USER_KEY]
+      user = User.find_by(id: user_id.to_i) if user_id.present?
+      render json: { has_valid_code: user.present? && ActivationCode.valid_for?(user) }
+    rescue RateLimiter::LimitExceeded
+      render_json_error(I18n.t("rate_limiter.slow_down"), status: 429)
+    end
+
     private
 
     # 和点激活链接（UsersController#perform_account_activation）的效果一样
